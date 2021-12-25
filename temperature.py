@@ -13,6 +13,13 @@ def getLocation():
         city="Chicago"
     return city
 
+def validateCity(out):
+    if out["cod"] == "404":
+        print("Oops! City not found.")
+        return False
+    else:
+        return True
+
 def processOutput(json):
     print('\x1b[7;33;40m' + ' City ' + '\x1b[0m' +'\x1b[6;33;47m' + '  ' + '\x1b[0m'+'\x1b[7;36;43m' + " "+city +" "+ '\x1b[0m' )
     print('\x1b[7;33;40m' + ' Temp ' + '\x1b[0m' +'\x1b[6;33;47m' + '  ' + '\x1b[0m'+'\x1b[7;36;43m' + " "+str(int(json["main"]["temp"] - 273.15))+u"\N{DEGREE SIGN}C"  + '\x1b[0m' )
@@ -26,4 +33,7 @@ def processOutput(json):
 #MAIN
 city=getLocation();
 res = requests.get(url.URL(city))
-processOutput(res.json())
+if validateCity(res.json()):
+    processOutput(res.json())
+else:
+    exit(1)
